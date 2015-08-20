@@ -62,6 +62,8 @@ gcloud compute ssh node1
 docker run -t -i --rm busybox /bin/sh
 ```
 
+The IP address you ping should match that output by the command `ip -f inet addr show eth0`
+
 ```
 ping -c 3 10.200.0.2
 ```
