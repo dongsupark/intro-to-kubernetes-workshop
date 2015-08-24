@@ -5,30 +5,29 @@ In this lab you will configure the network between node0 and node1 to ensure cro
 ### Create network routes between Docker on node0 and node1
 
 ```
-gcloud compute routes create default-route-10-200-0-0-24 \
-  --destination-range 10.200.0.0/24 \
-  --next-hop-instance node0
+core@node0 ~ $ sudo ip route add 10.200.1.0/24 via $(ping -c1 node1 | awk -F'[()]' '/64 bytes/ { print $2}') dev eth0
 ```
 ```
-gcloud compute routes create default-route-10-200-1-0-24 \
-  --destination-range 10.200.1.0/24 \
-  --next-hop-instance node1
+core@node1 ~ $ sudo ip route add 10.200.0.0/24 via $(ping -c1 node0 | awk -F'[()]' '/64 bytes/ { print $2}') dev eth0
 ```
 
 ```
-gcloud compute routes list
+core@node0 ~ $ ip route
+```
+```
+core@node1 ~ $ ip route
 ```
 
 ### Getting Containers Online
 
 ```
-gcloud compute ssh node0 \
-  --command "sudo iptables -t nat -A POSTROUTING ! -d 10.0.0.0/8 -o ens4v1 -j MASQUERADE"
+ssh node0 \
+  "sudo iptables -t nat -A POSTROUTING ! -d 10.0.0.0/8 -o eth0 -j MASQUERADE"
 ```
 
 ```
-gcloud compute ssh node1 \
-  --command "sudo iptables -t nat -A POSTROUTING ! -d 10.0.0.0/8 -o ens4v1 -j MASQUERADE"
+ssh node1 \
+  "sudo iptables -t nat -A POSTROUTING ! -d 10.0.0.0/8 -o eth0 -j MASQUERADE"
 ```
 
 ### Confirm networking
@@ -36,7 +35,7 @@ gcloud compute ssh node1 \
 #### Terminal 1
 
 ```
-gcloud compute ssh node0
+ssh node0
 ```
 ```
 docker run -t -i --rm busybox /bin/sh
@@ -55,7 +54,7 @@ ip -f inet addr show eth0
 #### Terminal 2
 
 ```
-gcloud compute ssh node1
+ssh node1
 ```
 
 ```

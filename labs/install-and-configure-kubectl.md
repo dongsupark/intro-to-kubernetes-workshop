@@ -25,18 +25,10 @@ sudo cp kubectl /usr/local/bin/kubectl
 Download the client credentials and CA cert:
 
 ```
-gcloud compute copy-files node0:~/admin-key.pem .
-gcloud compute copy-files node0:~/admin.pem .
-gcloud compute copy-files node0:~/ca.pem .
+scp node0:~/admin-key.pem .
+scp node0:~/admin.pem .
+scp node0:~/ca.pem .
 ``` 
-
-Get the Kubernetes controller external IP:
-
-```
-EXTERNAL_IP=$(gcloud compute ssh node0 --command \
-  "curl -H 'Metadata-Flavor: Google' \
-   http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip")
-```
 
 Create the workshop cluster config:
 
@@ -44,7 +36,7 @@ Create the workshop cluster config:
 kubectl config set-cluster workshop \
 --certificate-authority=ca.pem \
 --embed-certs=true \
---server=https://${EXTERNAL_IP}:6443
+--server=https://node0:6443
 ```
 
 Add the admin user credentials:

@@ -1,0 +1,8 @@
+#cloud-config
+ssh_authorized_keys:
+ - %PUB_KEY%
+hostname: %HOSTNAME%
+coreos:
+  units:
+    - name: systemd-networkd.service
+      command: restart
