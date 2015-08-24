@@ -3,7 +3,7 @@
 ## node1
 
 ```
-gcloud compute ssh node1
+ssh node1
 ```
 
 Download the kubelet unit file:
@@ -13,15 +13,14 @@ sudo curl https://kuar.io/kubelet.service \
   -o /etc/systemd/system/kubelet.service
 ```
 
-Configure the api-servers flag:
+Configure the api-servers flag (our API server run on node0):
 
 ```
-PROJECT_ID=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/project/project-id)
+PROJECT_ID=node0
 ```
 
 ```
-sudo sed -i -e "s/PROJECT_ID/${PROJECT_ID}/g;" /etc/systemd/system/kubelet.service
+sudo sed -i -e "s/node0.c.PROJECT_ID.internal/${PROJECT_ID}/g;" /etc/systemd/system/kubelet.service
 ```
 
 ```

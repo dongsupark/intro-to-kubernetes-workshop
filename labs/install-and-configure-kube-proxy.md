@@ -3,7 +3,7 @@
 ## node0
 
 ```
-gcloud compute ssh node0
+ssh node0
 ```
 
 Download the kube-proxy pod:
@@ -12,15 +12,14 @@ Download the kube-proxy pod:
 sudo curl -O https://kuar.io/kube-proxy-pod.yaml
 ```
 
-Configure the master flag:
+Configure the master flag (our API server runs on node0):
 
 ```
-PROJECT_ID=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/project/project-id)
+PROJECT_ID=node0
 ```
 
 ```
-sudo sed -i -e "s/PROJECT_ID/${PROJECT_ID}/g;" kube-proxy-pod.yaml
+sudo sed -i -e "s/node0.c.PROJECT_ID.internal/${PROJECT_ID}/g;" kube-proxy-pod.yaml
 ```
 
 ```
@@ -48,7 +47,7 @@ sudo iptables -vL -n -t nat
 ### node1
 
 ```
-gcloud compute ssh node1
+ssh node1
 ```
 
 Repeat the steps from above.

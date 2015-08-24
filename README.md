@@ -6,17 +6,17 @@ The slides from this workshop are hosted [online](http://go-talks.appspot.com/gi
 
 ## Course Outline
 
-### Google Compute Engine (GCE)
+### libvirt
 
 #### Labs
 
-  * [Install GCE client tools](labs/install-gce-client-tools.md)
+  * [Install libvirt](labs/install-libvirt.md)
 
 ### Kubernetes base infrastructure
 
 #### Labs
 
-  * [Provision CoreOS Cluster](labs/provisioning-coreos-on-gce.md)
+  * [Provision CoreOS Cluster](labs/provisioning-coreos-on-libvirt.md)
   * [Install and configure Docker](labs/install-and-configure-docker.md)
   * [Configure Networking](labs/configure-networking.md)
 
@@ -74,16 +74,38 @@ The slides from this workshop are hosted [online](http://go-talks.appspot.com/gi
 
 ### Tips
 
-#### Get the project ID from the instance metadata server:
+#### Deploy two virtual CoreOS nodes with `node0` and `node1` names:
 
 ```
-curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/project/project-id
+sudo libvirt/deploy_k8s_ws_cluster.sh 2
 ```
 
-#### Get the external-ip of the instance from the metadata server:
+#### Deploy two virtual CoreOS nodes with `node0` and `node1` names and custom path to SSH public key:
 
 ```
-curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
+sudo libvirt/deploy_k8s_ws_cluster.sh 2 ~/.ssh/my_custom_ssh_key.pub
+```
+
+#### Deploy single virtual CoreOS node with `customname` name:
+
+```
+sudo libvirt/deploy_k8s_ws_cluster.sh customname
+```
+
+#### Destroy and delete all virtual CoreOS nodes with `node[0-9]` name mask:
+
+```
+sudo libvirt/remove_k8s_ws_cluster.sh
+```
+
+#### Destroy and delete virtual CoreOS nodes with `customname` name:
+
+```
+sudo libvirt/remove_k8s_ws_cluster.sh customname
+```
+
+#### Clean-up kubectl config file:
+
+```
+rm -rf ~/.kube
 ```

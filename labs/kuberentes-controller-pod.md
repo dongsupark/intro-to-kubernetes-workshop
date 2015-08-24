@@ -5,7 +5,7 @@
 ### node0
 
 ```
-gcloud compute ssh node0
+ssh node0
 ```
 
 Download the kubelet unit file:
@@ -18,12 +18,11 @@ sudo curl https://kuar.io/kubelet.service \
 Configure the api-servers flag:
 
 ```
-PROJECT_ID=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/project/project-id)
+PROJECT_ID=$(hostname -f)
 ```
 
 ```
-sudo sed -i -e "s/PROJECT_ID/${PROJECT_ID}/g;" /etc/systemd/system/kubelet.service
+sudo sed -i -e "s/node0.c.PROJECT_ID.internal/${PROJECT_ID}/g;" /etc/systemd/system/kubelet.service
 ```
 
 ```
@@ -67,12 +66,4 @@ Verify:
 
 ```
 docker ps
-```
-
-### Allow external access to the API server secure port
-
-```
-gcloud compute firewall-rules create default-allow-kubernetes-secure \
-  --allow tcp:6443 \
-  --source-ranges 0.0.0.0/0
 ```

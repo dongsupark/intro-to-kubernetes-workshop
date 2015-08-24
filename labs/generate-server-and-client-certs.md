@@ -7,7 +7,7 @@ In this labs you will use cfssl to generate client and server TLS certs.
 ### node0
 
 ```
-gcloud compute ssh node0
+ssh node0
 ```
 
 Create a CSR for the API server:
@@ -15,11 +15,11 @@ Create a CSR for the API server:
 ```
 cat <<EOF > apiserver-csr.json
 {
-  "CN": "*.c.PROJECT_ID.internal",
+  "CN": "HOSTNAME",
   "hosts": [
     "127.0.0.1",
     "EXTERNAL_IP",
-    "*.c.PROJECT_ID.internal"
+    "HOSTNAME"
   ],
   "key": {
     "algo": "rsa",
@@ -43,21 +43,19 @@ EOF
 Get the PROJECT_ID:
 
 ```
-PROJECT_ID=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/project/project-id)
+PROJECT_ID=$(hostname -f)
 ```
 
 Get the EXTERNAL_IP:
 
 ```
-EXTERNAL_IP=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+EXTERNAL_IP=$(hostname -i)
 ```
 
 Substitute the PROJECT_ID:
 
 ```
-sed -i -e "s/PROJECT_ID/${PROJECT_ID}/g;" apiserver-csr.json
+sed -i -e "s/HOSTNAME/${PROJECT_ID}/g;" apiserver-csr.json
 ```
 
 Substitute the EXTERNAL_IP:

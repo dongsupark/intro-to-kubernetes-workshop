@@ -3,32 +3,19 @@
 ### Provision nginx
 
 ```
-gcloud compute instances create nginx \
-  --image-project coreos-cloud \
-  --image coreos-stable-723-3-0-v20150804 \
-  --boot-disk-size 200GB \
-  --machine-type n1-standard-1 \
-  --can-ip-forward \
-  --scopes compute-rw
+sudo libvirt/deploy_k8s_ws_cluster.sh nginx
 ```
 
 ### Prep 
 
 ```
-gcloud config list project
-gcloud compute instances list
-```
-
-Edit etcd hosts on your local machine.
-
-```
-sudo bash -c 'echo "NGINX_EXTERNAL_IP inspector.PROJECT_ID.io" >> /etc/hosts'
+sudo virsh list
 ```
 
 ### Configure nginx
 
 ```
-gcloud compute ssh nginx
+ssh nginx
 ```
 
 ```
@@ -41,15 +28,10 @@ Review the nginx vhost configuration:
 cat intro-to-kubernetes-workshop/nginx/inspector.conf
 ```
 
-Substitute the project name:
+Substitute the project and server name:
 
 ```
-PROJECT_ID=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/project/project-id)
-```
-
-```
-sed -i -e "s/PROJECT_ID/${PROJECT_ID}/g;" intro-to-kubernetes-workshop/nginx/inspector.conf
+sed -i -e "s/.c.PROJECT_ID.internal//g;s/inspector.PROJECT_ID.io/nginx/g;" intro-to-kubernetes-workshop/nginx/inspector.conf
 ```
 
 ```
@@ -78,18 +60,14 @@ sudo docker run -d --net=host \
 
 #### laptop
 
-```
-gcloud compute firewall-rules create default-allow-nginx --allow tcp:80
-```
-
 Visit 
 
 ```
-http://inspector.PROJECT_ID.io
+http://nginx
 ```
 
 Every page refresh should show different MAC and IP address:
 
 ```
-http://inspector.PROJECT_ID.io/net
+http://nginx/net
 ```
