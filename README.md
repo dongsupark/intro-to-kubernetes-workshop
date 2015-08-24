@@ -6,17 +6,17 @@ The slides from this workshop are hosted [online](http://go-talks.appspot.com/gi
 
 ## Course Outline
 
-### libvirt
+### Vagrant
 
 #### Labs
 
-  * [Install libvirt](labs/install-libvirt.md)
+  * [Install Vagrant](labs/install-vagrant.md)
 
 ### Kubernetes base infrastructure
 
 #### Labs
 
-  * [Provision CoreOS Cluster](labs/provisioning-coreos-on-libvirt.md)
+  * [Provision CoreOS Cluster](labs/provisioning-coreos-on-vagrant.md)
   * [Install and configure Docker](labs/install-and-configure-docker.md)
   * [Configure Networking](labs/configure-networking.md)
 
@@ -74,34 +74,10 @@ The slides from this workshop are hosted [online](http://go-talks.appspot.com/gi
 
 ### Tips
 
-#### Deploy two virtual CoreOS nodes with `node0` and `node1` names:
+#### Destroy and delete Vagrant instances:
 
 ```
-sudo libvirt/deploy_k8s_ws_cluster.sh 2
-```
-
-#### Deploy two virtual CoreOS nodes with `node0` and `node1` names and custom path to SSH public key:
-
-```
-sudo libvirt/deploy_k8s_ws_cluster.sh 2 ~/.ssh/my_custom_ssh_key.pub
-```
-
-#### Deploy single virtual CoreOS node with `customname` name:
-
-```
-sudo libvirt/deploy_k8s_ws_cluster.sh customname
-```
-
-#### Destroy and delete all virtual CoreOS nodes with `node[0-9]` name mask:
-
-```
-sudo libvirt/remove_k8s_ws_cluster.sh
-```
-
-#### Destroy and delete virtual CoreOS nodes with `customname` name:
-
-```
-sudo libvirt/remove_k8s_ws_cluster.sh customname
+cd vagrant && vagrant destroy
 ```
 
 #### Clean-up kubectl config file:

@@ -1,21 +1,15 @@
 # Exposing Services with Nginx
 
-### Provision nginx
+### Check nginx instance
 
 ```
-sudo libvirt/deploy_k8s_ws_cluster.sh nginx
-```
-
-### Prep 
-
-```
-sudo virsh list
+vagrant status
 ```
 
 ### Configure nginx
 
 ```
-ssh nginx
+vagrant ssh nginx
 ```
 
 ```
@@ -31,7 +25,7 @@ cat intro-to-kubernetes-workshop/nginx/inspector.conf
 Substitute the project and server name:
 
 ```
-sed -i -e "s/.c.PROJECT_ID.internal//g;s/inspector.PROJECT_ID.io/nginx/g;" intro-to-kubernetes-workshop/nginx/inspector.conf
+sed -i -e "s/.c.PROJECT_ID.internal//g;s/inspector.PROJECT_ID.io/172.17.8.103/g;" intro-to-kubernetes-workshop/nginx/inspector.conf
 ```
 
 ```
@@ -63,11 +57,11 @@ sudo docker run -d --net=host \
 Visit 
 
 ```
-http://nginx
+http://172.17.8.103
 ```
 
 Every page refresh should show different MAC and IP address:
 
 ```
-http://nginx/net
+http://172.17.8.103/net
 ```

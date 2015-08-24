@@ -5,7 +5,7 @@
 ### node0
 
 ```
-ssh node0
+vagrant ssh node0
 ```
 
 Download the kubelet unit file:

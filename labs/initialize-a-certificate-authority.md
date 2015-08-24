@@ -7,7 +7,7 @@ In this lab you will setup the necessary PKI infrastructure to secure the Kubere
 ### node0
 
 ```
-ssh node0
+vagrant ssh node0
 ```
 
 ```

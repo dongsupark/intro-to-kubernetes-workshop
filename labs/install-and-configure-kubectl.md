@@ -25,9 +25,9 @@ sudo cp kubectl /usr/local/bin/kubectl
 Download the client credentials and CA cert:
 
 ```
-scp node0:~/admin-key.pem .
-scp node0:~/admin.pem .
-scp node0:~/ca.pem .
+vagrant ssh node0 -- "cat ~/admin-key.pem" > admin-key.pem
+vagrant ssh node0 -- "cat ~/admin.pem" > admin.pem
+vagrant ssh node0 -- "cat ~/ca.pem" > ca.pem
 ``` 
 
 Create the workshop cluster config:
@@ -36,7 +36,7 @@ Create the workshop cluster config:
 kubectl config set-cluster workshop \
 --certificate-authority=ca.pem \
 --embed-certs=true \
---server=https://node0:6443
+--server=https://172.17.8.101:6443
 ```
 
 Add the admin user credentials:

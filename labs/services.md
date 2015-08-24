@@ -27,9 +27,9 @@ kubectl describe service inspector
 ##### laptop
 
 ```
-curl node0:36000
+curl 172.17.8.101:36000
 ```
 
 ```
-curl node1:36000
+curl 172.17.8.102:36000
 ```

@@ -17,7 +17,7 @@ vim skydns-rc.yaml
 ```
 
 ```
-- -kube_master_url=http://node0:8080
+- -kube_master_url=http://172.17.8.101:8080
 ```
 
 Create the SkyDNS replication controller:

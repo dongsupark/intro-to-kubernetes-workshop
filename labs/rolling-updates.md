@@ -38,7 +38,7 @@ Try hitting the service port on any of the node instances.
 #### laptop
 
 ```
-while true; do curl -s http://nginx | \
+while true; do curl -s http://172.17.8.103 | \
   grep -o -e 'Version: Inspector [0-9].[0-9].[0-9]'; sleep 1; done
 ```
 
@@ -61,7 +61,7 @@ kubectl get pods --watch
 #### laptop
 
 ```
-while true; do curl -s http://nginx | \
+while true; do curl -s http://172.17.8.103 | \
   grep -o -e 'Version: Inspector [0-9].[0-9].[0-9]'; sleep 1; done
 ```
 

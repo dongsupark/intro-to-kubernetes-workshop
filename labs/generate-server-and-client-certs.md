@@ -7,7 +7,7 @@ In this labs you will use cfssl to generate client and server TLS certs.
 ### node0
 
 ```
-ssh node0
+vagrant ssh node0
 ```
 
 Create a CSR for the API server:
@@ -49,7 +49,7 @@ PROJECT_ID=$(hostname -f)
 Get the EXTERNAL_IP:
 
 ```
-EXTERNAL_IP=$(hostname -i)
+EXTERNAL_IP=$(hostname -i | awk '{print $1}')
 ```
 
 Substitute the PROJECT_ID:

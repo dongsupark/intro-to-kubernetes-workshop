@@ -5,7 +5,7 @@ In this lab you will install and configure Docker on node0 and node1.
 ### node0
 
 ```
-ssh node0
+vagrant ssh node0
 ```
 
 #### Download and configure the docker unit file
@@ -41,7 +41,7 @@ docker version
 ### node1
 
 ```
-ssh node1
+vagrant ssh node1
 ```
 
 #### Download and configure the docker unit file
