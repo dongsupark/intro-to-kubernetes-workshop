@@ -63,6 +63,15 @@ else
   MASTER_USER_DATA_TEMPLATE=$CDIR/k8s_master.yaml
 fi
 
+# A distro-specific handling is needed for running virt-install --os-variant.
+# Strange enough, virt-install does not support "virtio26" in its OS variant.
+DISTRO=$(lsb_release -si)
+if [ "$DISTRO" = "Fedora" ]; then
+  OS_VARIANT="debian7"
+else
+  OS_VARIANT="virtio26"
+fi
+
 ETCD_DISCOVERY=$(curl -s "https://discovery.etcd.io/new?size=$1")
 K8S_RELEASE=v1.1.3
 FLANNEL_TYPE=vxlan
@@ -151,7 +160,7 @@ for SEQ in $(seq 1 $1); do
     --ram $RAM \
     --vcpus $CPUs \
     --os-type=linux \
-    --os-variant=virtio26 \
+    --os-variant=$OS_VARIANT \
     --disk path=$LIBVIRT_PATH/$COREOS_HOSTNAME.qcow2,format=qcow2,bus=virtio \
     --filesystem $LIBVIRT_PATH/$COREOS_HOSTNAME/,config-2,type=mount,mode=squash \
     --vnc \
