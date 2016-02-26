@@ -1,5 +1,15 @@
 #!/bin/bash
 
+usage() {
+  echo "Usage: $0 %domain_name%"
+}
+
+if [ "$1" == "" ]; then
+  echo "Domain name is empty"
+  usage
+  exit 1
+fi
+
 LIBVIRT_PATH=/var/lib/libvirt/images/coreos
 
 if [[ "$1" =~ ^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$ ]]; then
