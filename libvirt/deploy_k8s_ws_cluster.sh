@@ -48,14 +48,21 @@ fi
 PUB_KEY=$(cat $PUB_KEY_PATH)
 PRIV_KEY_PATH=$(echo ${PUB_KEY_PATH} | sed 's#.pub##')
 CDIR=$(cd `dirname $0` && pwd)
-TECTONIC_LICENSE=$(cat $CDIR/tectonic.lic 2>/dev/null)
-DOCKER_CFG=$(cat $CDIR/docker.cfg 2>/dev/null)
 LIBVIRT_PATH=/var/lib/libvirt/images/coreos
-MASTER_USER_DATA_TEMPLATE=$CDIR/k8s_tectonic_master.yaml
-#MASTER_USER_DATA_TEMPLATE=$CDIR/k8s_master.yaml
 NODE_USER_DATA_TEMPLATE=$CDIR/k8s_node.yaml
 CHANNEL=alpha
 RELEASE=current
+
+[ -f "$CDIR/docker.cfg" ] && DOCKER_CFG=$(cat $CDIR/docker.cfg 2>/dev/null)
+
+if [ -f "$CDIR/tectonic.lic" ]; then
+  TECTONIC_LICENSE=$(cat $CDIR/tectonic.lic 2>/dev/null)
+  MASTER_USER_DATA_TEMPLATE=$CDIR/k8s_tectonic_master.yaml
+else
+  TECTONIC_LICENSE=
+  MASTER_USER_DATA_TEMPLATE=$CDIR/k8s_master.yaml
+fi
+
 ETCD_DISCOVERY=$(curl -s "https://discovery.etcd.io/new?size=$1")
 K8S_RELEASE=v1.1.3
 FLANNEL_TYPE=vxlan
