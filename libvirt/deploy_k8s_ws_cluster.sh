@@ -146,7 +146,12 @@ for SEQ in $(seq 1 $1); do
        s#%TECTONIC_LICENSE%#$TECTONIC_LICENSE#g;\
        s#%DOCKER_CFG%#$DOCKER_CFG#g;\
        s#%ETCD_ENDPOINTS%#$ETCD_ENDPOINTS#g" $USER_DATA_TEMPLATE > $LIBVIRT_PATH/$COREOS_HOSTNAME/openstack/latest/user_data
-  if [[ selinuxenabled ]]; then
+  # NOTE: selinuxenabled doesn't return the selinux status correctly.
+  #       It looks like it returns 1 even if SElinux is disabled.
+  #       So we should call sestatus instead of selinuxenabled, to determine
+  #       the status reliably, especially on distros like Fedora.
+  #       - dpark 20160226
+  if [ "$(sestatus -b | grep 'SELinux status' | awk '{print $3}')" = "enabled" ]; then
     echo "Making SELinux configuration"
     semanage fcontext -d -t virt_content_t "$LIBVIRT_PATH/$COREOS_HOSTNAME(/.*)?" || true
     semanage fcontext -a -t virt_content_t "$LIBVIRT_PATH/$COREOS_HOSTNAME(/.*)?"
